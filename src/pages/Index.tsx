@@ -21,6 +21,10 @@ const Index = () => {
     sendToWhatsApp 
   } = useCart();
 
+  const currentYear = new Date().getFullYear();
+  const companyName = "D'CASA Marmitaria";
+  const copyrightText = `© ${currentYear} ${companyName}. Todos os direitos reservados.`;
+
   return (
     <div className="min-h-screen bg-background">
       <Header 
@@ -67,7 +71,7 @@ const Index = () => {
       <footer className="border-t border-border py-8 mt-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-muted-foreground text-sm">
-            © 2024 Sabor & Arte Restaurante. Todos os direitos reservados.
+             {copyrightText}
           </p>
         </div>
       </footer>
