@@ -30,14 +30,14 @@ const Signup = () => {
 
     setIsLoading(true);
 
-    const result = signup(email, password, name);
-    
+    const result = await signup(email, password, name);
+
     if (result.success) {
       navigate('/admin');
     } else {
       setError(result.error || 'Erro ao criar conta');
     }
-    
+
     setIsLoading(false);
   };
 

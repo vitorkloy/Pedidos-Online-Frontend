@@ -17,14 +17,14 @@ const Login = () => {
     setError('');
     setIsLoading(true);
 
-    const result = login(email, password);
-    
+    const result = await login(email, password);
+
     if (result.success) {
       navigate('/admin');
     } else {
       setError(result.error || 'Erro ao fazer login');
     }
-    
+
     setIsLoading(false);
   };
 

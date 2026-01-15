@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import { api } from "@/services/api";
 
 interface User {
   id: string;
@@ -6,83 +7,74 @@ interface User {
   name: string;
 }
 
-interface AuthUser {
-  id: string;
-  email: string;
-  name: string;
-  password: string;
-}
-
-const USERS_KEY = 'restaurant_users';
-const CURRENT_USER_KEY = 'restaurant_current_user';
-
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  async function loadCurrentUser() {
+    try {
+      setIsLoading(true);
+      const response = await api.get<User | null>("/auth/me");
+      setUser(response.data);
+    } catch {
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    const storedUser = localStorage.getItem(CURRENT_USER_KEY);
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
+    loadCurrentUser();
   }, []);
 
-  const getUsers = (): AuthUser[] => {
-    const users = localStorage.getItem(USERS_KEY);
-    return users ? JSON.parse(users) : [];
-  };
+  async function signup(email: string, password: string, name: string) {
+    try {
+      const response = await api.post<User>("/auth/signup", {
+        email,
+        password,
+        name
+      });
 
-  const saveUsers = (users: AuthUser[]) => {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  };
+      setUser(response.data);
+      setError(null);
 
-  const signup = (email: string, password: string, name: string): { success: boolean; error?: string } => {
-    const users = getUsers();
-    
-    if (users.find(u => u.email === email)) {
-      return { success: false, error: 'Este email já está cadastrado' };
+      return { success: true };
+    } catch (err: any) {
+      setError(err?.response?.data?.error ?? "Erro ao cadastrar");
+      return { success: false };
     }
+  }
 
-    const newUser: AuthUser = {
-      id: crypto.randomUUID(),
-      email,
-      name,
-      password
-    };
+  async function login(email: string, password: string) {
+    try {
+      const response = await api.post<User>("/auth/login", {
+        email,
+        password
+      });
 
-    saveUsers([...users, newUser]);
-    
-    const userWithoutPassword: User = { id: newUser.id, email: newUser.email, name: newUser.name };
-    setUser(userWithoutPassword);
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
-    
-    return { success: true };
-  };
+      setUser(response.data);
+      setError(null);
 
-  const login = (email: string, password: string): { success: boolean; error?: string } => {
-    const users = getUsers();
-    const foundUser = users.find(u => u.email === email && u.password === password);
-    
-    if (!foundUser) {
-      return { success: false, error: 'Email ou senha incorretos' };
+      return { success: true };
+    } catch (err: any) {
+      setError(err?.response?.data?.error ?? "Email ou senha inválidos");
+      return { success: false };
     }
+  }
 
-    const userWithoutPassword: User = { id: foundUser.id, email: foundUser.email, name: foundUser.name };
-    setUser(userWithoutPassword);
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
-    
-    return { success: true };
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem(CURRENT_USER_KEY);
-  };
+  async function logout() {
+    try {
+      await api.post("/auth/logout");
+    } finally {
+      setUser(null);
+    }
+  }
 
   return {
     user,
     isLoading,
+    error,
     isAuthenticated: !!user,
     signup,
     login,
