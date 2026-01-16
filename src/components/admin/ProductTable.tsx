@@ -34,7 +34,7 @@ export function ProductTable({ products, onEdit, onDelete }: ProductTableProps) 
           </thead>
           <tbody>
             {products.map((product) => (
-              <tr key={product.id} className="border-b border-border hover:bg-secondary/30 transition-colors">
+              <tr key={product._id} className="border-b border-border hover:bg-secondary/30 transition-colors">
                 <td className="px-6 py-4">
                   <img
                     src={product.image}
@@ -65,7 +65,7 @@ export function ProductTable({ products, onEdit, onDelete }: ProductTableProps) 
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => onDelete(product.id)}
+                      onClick={() => onDelete(product._id)}
                       className="p-2 rounded-lg bg-secondary hover:bg-destructive hover:text-destructive-foreground transition-colors"
                       aria-label="Excluir produto"
                     >
@@ -82,7 +82,7 @@ export function ProductTable({ products, onEdit, onDelete }: ProductTableProps) 
       {/* Mobile Cards */}
       <div className="md:hidden divide-y divide-border">
         {products.map((product) => (
-          <div key={product.id} className="p-4 flex gap-4">
+          <div key={product._id} className="p-4 flex gap-4">
             <img
               src={product.image}
               alt={product.name}
@@ -105,7 +105,7 @@ export function ProductTable({ products, onEdit, onDelete }: ProductTableProps) 
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => onDelete(product.id)}
+                    onClick={() => onDelete(product._id)}
                     className="p-2 rounded-lg bg-secondary hover:bg-destructive hover:text-destructive-foreground transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />

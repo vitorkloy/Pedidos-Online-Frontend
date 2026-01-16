@@ -65,7 +65,7 @@ export function CartDrawer({
             ) : (
               items.map((item) => (
                 <div
-                  key={item.id}
+                  key={item._id}
                   className="flex gap-3 p-3 bg-secondary/50 rounded-xl animate-fade-in"
                 >
                   <img
@@ -84,7 +84,7 @@ export function CartDrawer({
                     <div className="flex items-center justify-between mt-2">
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => onUpdateQuantity(item._id, item.quantity - 1)}
                           className="w-7 h-7 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
                         >
                           <Minus className="w-3 h-3" />
@@ -93,14 +93,14 @@ export function CartDrawer({
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => onUpdateQuantity(item._id, item.quantity + 1)}
                           className="w-7 h-7 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
                       </div>
                       <button
-                        onClick={() => onRemoveItem(item.id)}
+                        onClick={() => onRemoveItem(item._id)}
                         className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                         aria-label="Remover item"
                       >

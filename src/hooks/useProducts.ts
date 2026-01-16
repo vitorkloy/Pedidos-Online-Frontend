@@ -23,7 +23,8 @@ export function useProducts() {
     loadProducts();
   }, []);
 
-  async function addProduct(product: Omit<Product, "id">) {
+  // Mudamos o Omit para remover "_id"
+  async function addProduct(product: Omit<Product, "_id">) {
     try {
       const response = await api.post<Product>("/products", product);
       setProducts(prev => [...prev, response.data]);
@@ -34,17 +35,14 @@ export function useProducts() {
 
   async function updateProduct(
     id: string,
-    updatedProduct: Omit<Product, "id">
+    updatedProduct: Omit<Product, "_id">
   ) {
     try {
-      const response = await api.put<Product>(
-        `/products/${id}`,
-        updatedProduct
-      );
+      const response = await api.put<Product>(`/products/${id}`, updatedProduct);
 
       setProducts(prev =>
         prev.map(product =>
-          product.id === id ? response.data : product
+          product._id === id ? response.data : product // Comparação com _id
         )
       );
     } catch {
@@ -55,7 +53,7 @@ export function useProducts() {
   async function deleteProduct(id: string) {
     try {
       await api.delete(`/products/${id}`);
-      setProducts(prev => prev.filter(product => product.id !== id));
+      setProducts(prev => prev.filter(product => product._id !== id)); // Filtro com _id
     } catch {
       setError("Erro ao remover produto");
     }

@@ -31,10 +31,11 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
     }
 
     onSubmit({
+      _id: '',
       name: name.trim(),
       description: description.trim(),
       price: parseFloat(price),
-      image: image.trim()
+      image: image.trim(),
     });
 
     setName('');

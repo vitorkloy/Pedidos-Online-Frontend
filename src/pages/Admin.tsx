@@ -29,7 +29,7 @@ const Admin = () => {
 
   const handleSubmit = (productData: Omit<Product, 'id'>) => {
     if (editingProduct) {
-      updateProduct(editingProduct.id, productData);
+      updateProduct(editingProduct._id, productData);
     } else {
       addProduct(productData);
     }

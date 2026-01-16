@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { api } from "@/services/api";
 
 interface User {
-  id: string;
+  _id: string;
   email: string;
   name: string;
 }

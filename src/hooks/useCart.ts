@@ -6,11 +6,11 @@ export function useCart() {
 
   const addItem = useCallback((product: Product) => {
     setItems(currentItems => {
-      const existingItem = currentItems.find(item => item.id === product.id);
+      const existingItem = currentItems.find(item => item._id === product._id);
       
       if (existingItem) {
         return currentItems.map(item =>
-          item.id === product.id
+          item._id === product._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -21,7 +21,7 @@ export function useCart() {
   }, []);
 
   const removeItem = useCallback((productId: string) => {
-    setItems(currentItems => currentItems.filter(item => item.id !== productId));
+    setItems(currentItems => currentItems.filter(item => item._id !== productId));
   }, []);
 
   const updateQuantity = useCallback((productId: string, quantity: number) => {
@@ -32,7 +32,7 @@ export function useCart() {
     
     setItems(currentItems =>
       currentItems.map(item =>
-        item.id === productId ? { ...item, quantity } : item
+        item._id === productId ? { ...item, quantity } : item
       )
     );
   }, [removeItem]);

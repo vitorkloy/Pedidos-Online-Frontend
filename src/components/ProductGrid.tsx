@@ -42,7 +42,7 @@ export function ProductGrid({ products, onAddToCart, isLoading }: ProductGridPro
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {products.map((product, index) => (
-        <div key={product.id} style={{ animationDelay: `${index * 100}ms` }}>
+        <div key={product._id} style={{ animationDelay: `${index * 100}ms` }}>
           <ProductCard product={product} onAddToCart={onAddToCart} />
         </div>
       ))}
